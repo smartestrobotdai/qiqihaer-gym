@@ -42,17 +42,17 @@ Based on the above data, modeling is done in FreeCAD.
 未堆放珍珠岩情况下:
 连接处最大垂直压力为7.756077E+04N， 位于节点 (x=5, y=7)
 连接处最大水平压力为1.032378E+05N， 位于节点 (x=6, y=0)
+各节点位移情况:
+![Image](images/displacement-no-perlite.png)
 
 事故发生时:
 连接处最大垂直压力为1.201489E+05N, 位于节点 (x=8, y=0) (x=8,y=7)
 连接处最大水平拉力为1.428545E+05N, 位于节点 (x=8, y=0) (x=8,y=7) 
+各节点位移情况:
+![Image](images/displacement-perlite.png)
 
 施加最大允许荷载的情况下:
 连接处最大垂直压力为1.169283E+05N, 位于(x=6, y=0) (x=6,y=7)
 连接处最大水平拉力为1.554994E+05N, 位于(x=5, y=0) (x=5,y=7)
 
-Displacement Distribution
-![Image](images/displacement.png)
 
-Stress Distribution
-![Image](images/stress.png)
