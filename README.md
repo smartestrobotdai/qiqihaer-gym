@@ -34,10 +34,10 @@ Based on the rescue site video [2], it's estimated that each bag of perlite weig
 
 基于救援现场视频[2]， 估算珍珠岩每袋约20KG, 袋子尺寸约为 0.6X0.4X0.2 m^3, 堆放高度为1.2米，每平方米的重量为: 20X1.2/(0.6X0.4X0.2) = 500kg 约等于 5000N/m^2。
 
-按照规范规定，屋顶活动载荷为50kg/m^2, 雪载按照五十年一遇计算，约为50kg/m^2, 安全储备取1.35
-活动荷载与雪载为：
+According to the regulations, the live load for the roof is 50kg/m^2. The snow load, calculated based on a once-in-fifty-years occurrence, is approximately 50kg/m^2. The safety reserve is taken as 1.35. The combined live load and snow load are: 50kg + 50kg = 100kg/m^2, which is approximately 1000N/m^2.
 
-50kg + 50kg = 100kg/m^2 约为1000N/m^2
+按照规范规定，屋顶活动载荷为50kg/m^2, 雪载按照五十年一遇计算，约为50kg/m^2, 安全储备取1.35
+活动荷载与雪载为： 50kg + 50kg = 100kg/m^2 约为1000N/m^2
 
 It's estimated that the spacing of the trusses is 3 meters. The length of the truss is 12X3=36 meters, and the width is 8X3=24 meters.
 
