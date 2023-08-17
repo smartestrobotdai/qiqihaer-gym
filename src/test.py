@@ -1,8 +1,8 @@
-import FreeCAD, Part
+import FreeCAD, Part, FemGui
 
-GRID_X = 19
-GRID_Y = 14
-SPACING = 2000
+GRID_X = 12
+GRID_Y = 8
+SPACING = 3000
 HEIGHT = 2000
 
 def create_2_layer_grid(doc, x_count, y_count, spacing=10, height_difference=10):
@@ -92,82 +92,81 @@ FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)
 ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)
 FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)
 
-# Add fixed constraints.
-fixed_constraint = doc.addObject("Fem::ConstraintFixed", "ConstraintFixed")
-doc.ConstraintFixed.Scale = 1
-doc.ConstraintFixed.References = [(App.ActiveDocument.Edge_Upper_X18_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X18_Y0_to_Y1,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y1_to_Y2,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y2_to_Y3,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y3_to_Y4,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y4_to_Y5,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y5_to_Y6,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y6_to_Y7,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y7_to_Y8,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y8_to_Y9,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y9_to_Y10,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y10_to_Y11,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y11_to_Y12,"Vertex2"), (App.ActiveDocument.Edge_Upper_X18_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X17_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X16_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X15_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X14_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X13_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X12_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X11_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X10_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X9_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X8_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X7_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X6_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X5_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X4_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X3_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X2_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X1_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y12_to_Y13,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y11_to_Y12,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y10_to_Y11,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y9_to_Y10,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y8_to_Y9,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y7_to_Y8,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y6_to_Y7,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y5_to_Y6,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y4_to_Y5,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y3_to_Y4,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y2_to_Y3,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y1_to_Y2,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y0_to_Y1,"Vertex2"), (App.ActiveDocument.Edge_Upper_X0_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X1_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X2_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X3_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X4_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X5_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X6_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X7_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X8_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X9_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X10_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X11_Y0_to_Y1,"Vertex1"), (App.ActiveDocument._LayerGrid,"Vertex313"), (App.ActiveDocument.Edge_Upper_X13_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X14_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X15_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X16_Y0_to_Y1,"Vertex1"), (App.ActiveDocument.Edge_Upper_X17_Y0_to_Y1,"Vertex1")]
-FemGui.getActiveAnalysis().addObject(fixed_constraint)
 
-# Force calculation:
-# every grid's area: 2000*2000 = 4 m^2
-# the ceiling weight: 2.4KN/m^2
-# steel structure weight: 0.26KN/m^2
-# total force: (2.4+0.26)*4 = 10.64
-# force on edges on the middle:
-# 10.64/2 = 5320N
-self_weight_middle_edges = doc.addObject("Fem::ConstraintForce", "selfWeightMiddle")
-self_weight_middle_edges.Force = 5320
-self_weight_middle_edges.DirectionVector = FreeCAD.Vector(0,0,-1)
+def add_fixed_constraint(doc, name, vertex_name="Vertex1"):
+  fixed_constraint = doc.addObject("Fem::ConstraintFixed", name)
+  fixed_constraint.Scale = 1
+  fixed_constraint.References = [(doc.getObject(name), vertex_name)]
+  FemGui.getActiveAnalysis().addObject(fixed_constraint)
 
-# force on edges on the border: 
-# 10.64/4=2660N
-self_weight_border_edges = doc.addObject("Fem::ConstraintForce", "selfWeightBorder")
-self_weight_border_edges.Force = 2660
-self_weight_border_edges.DirectionVector = FreeCAD.Vector(0,0,-1)
+for y in range(GRID_Y-1):
+  edge_name = f'Edge_Upper_X{0}_Y{y}_to_Y{y+1}'
+  add_fixed_constraint(doc, edge_name)
+  edge_name = f'Edge_Upper_X{GRID_X-1}_Y{y}_to_Y{y+1}'
+  add_fixed_constraint(doc, edge_name)
 
-middle_edges = []
-border_edges = []
-for x in range(GRID_X-1):
-  for y in range(GRID_Y-1):
-    if x == 0 or x == GRID_X - 2 or y == 0 or y == GRID_Y - 2:
-      edges = border_edges
-    else:
-      edges = middle_edges
-    edge1_name = f'Edge_Upper_X{x}_Y{y}_to_Y{y+1}'
-    edge2_name = f'Edge_Upper_Y{y}_X{x}_to_X{x+1}'
-    edges.append((doc.getObject(edge1_name),"Edge1"))
-    edges.append((doc.getObject(edge2_name),"Edge1"))
-
-doc.selfWeightMiddle.References = middle_edges
-FemGui.getActiveAnalysis().addObject(self_weight_middle_edges)
+for x in range(1, GRID_X-1):
+  edge_name = f'Edge_Upper_X{x}_Y{0}_to_Y{1}'
+  add_fixed_constraint(doc, edge_name)
+  edge_name = f'Edge_Upper_X{x}_Y{GRID_Y-2}_to_Y{GRID_Y-1}'
+  add_fixed_constraint(doc, edge_name, vertex_name="Vertex2")
+  
 
 
-doc.selfWeightBorder.References = border_edges
-FemGui.getActiveAnalysis().addObject(self_weight_border_edges)
+
+# stress is the stress in N/m^2
+def get_total_force(stress, x_count, y_count, spacing_in_meter):
+  # calculate the area
+  print(x_count, y_count, spacing_in_meter)
+  area = (x_count - 1) * (y_count - 1) * spacing_in_meter * spacing_in_meter
+  print('area=', area)
+  # calculate the force
+  force = area * stress
+  return force
 
 
-# the perlite weight: 3.0KN/m^2
-# total force on square: 3*4 = 12KN
-# force on the middle edges: 12/2 = 6KN
+def get_edges(x_start=0):
+  edges = []
 
-perlite_force_middle_edges = doc.addObject("Fem::ConstraintForce", "perliteForceMiddle")
-perlite_force_middle_edges.Force = 6000
-perlite_force_middle_edges.DirectionVector = FreeCAD.Vector(0,0,-1)
+  def append_edge(edge_name):
+    edges.append((doc.getObject(edge_name), 'Edge1'))
 
-# force on the border edges: 12/4 = 3kN
-perlite_force_border_edges = doc.addObject("Fem::ConstraintForce", "perliteForceBorder")
-perlite_force_border_edges.Force = 3000
-perlite_force_border_edges.DirectionVector = FreeCAD.Vector(0,0,-1)
-
-perlite_middle_edges = []
-perlite_border_edges = []
-for x in range(14, GRID_X-1):
-  for y in range(GRID_Y-1):
-    if x == 14 or x == GRID_X - 2 or y == 0 or y == GRID_Y - 2:
-      edges = perlite_border_edges
-    else:
-      edges = perlite_middle_edges
-    edge1_name = f'Edge_Upper_X{x}_Y{y}_to_Y{y+1}'
-    edge2_name = f'Edge_Upper_Y{y}_X{x}_to_X{x+1}'
-    edges.append((doc.getObject(edge1_name),"Edge1"))
-    edges.append((doc.getObject(edge2_name),"Edge1"))
-
-doc.perliteForceMiddle.References = perlite_middle_edges
-FemGui.getActiveAnalysis().addObject(perlite_force_middle_edges)
+  for x in range(x_start, GRID_X):
+    for y in range(GRID_Y):
+      if y > 0:
+        edge_name = f'Edge_Upper_X{x}_Y{y-1}_to_Y{y}'
+        append_edge(edge_name)
+      edge_name = f'Edge_Upper_Y{y}_X{x}_to_X{x+1}'
+      append_edge(edge_name)
+  
+  return edges
 
 
-doc.perliteForceBorder.References = perlite_border_edges
-FemGui.getActiveAnalysis().addObject(perlite_force_border_edges)
+def add_load(stress, x_start, load_name):
+  load_edges = doc.addObject("Fem::ConstraintForce", load_name)
+  load_edges.Force = get_total_force(stress, GRID_X-x_start, GRID_Y, SPACING/1000)
+  load_edges.DirectionVector = FreeCAD.Vector(0,0,-1)
+  edges = get_edges(x_start=x_start)
+  load_edges.References = edges
+  FemGui.getActiveAnalysis().addObject(load_edges)
+  
+
+# ceiling weight in N/m^2 (2400N/m^2)
+# steel self weight in N/m^2 (260N/m^2)	
+
+add_load(2400+260, 0, "ceilingSelfWeight")
+
+
+
+# assume that the perlite package is 0.6*0.3*0.2 in size
+# each pack is 20kg
+# the height is 1.2m
+# the weight is 20kg/(0.6*0.4*0.2)*1.2 = 500kg
+add_load(5000, 8, "perliteWeight")
+
+
+# snow + active load:1000
+add_load(1000*1.35, 0, "snowActiveLoad")
 
 
 doc.recompute()
