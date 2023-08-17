@@ -39,20 +39,37 @@ Based on the above data, modeling is done in FreeCAD.
 基于以上数据进行freeCAD建模。
 
 ## 4. Findings
+When perlite is not stacked:
+
+The maximum vertical pressure at the connection is 7.756077E+04N, located at the node (x=5, y=7).
+The maximum horizontal pressure at the connection is 1.032378E+05N, located at the node (x=6, y=0).
+Displacement of each node:
+
 未堆放珍珠岩情况下:
+
 连接处最大垂直压力为7.756077E+04N， 位于节点 (x=5, y=7)
 连接处最大水平压力为1.032378E+05N， 位于节点 (x=6, y=0)
 各节点位移情况:
 ![Image](images/displacement-no-perlite.png)
 
+At the time of the accident:
+
+The maximum vertical pressure at the connection is 1.201489E+05N, located at the nodes (x=8, y=0) and (x=8,y=7).
+The maximum horizontal tensile force at the connection is 1.428545E+05N, located at the nodes (x=8, y=0) and (x=8,y=7).
+Displacement of each node:
 事故发生时:
+
 连接处最大垂直压力为1.201489E+05N, 位于节点 (x=8, y=0) (x=8,y=7)
 连接处最大水平拉力为1.428545E+05N, 位于节点 (x=8, y=0) (x=8,y=7) 
 各节点位移情况:
 ![Image](images/displacement-perlite.png)
 
+Under the condition of applying the maximum allowable load:
+
+The maximum vertical pressure at the connection is 1.169283E+05N, located at the nodes (x=6, y=0) and (x=6,y=7).
+The maximum horizontal tensile force at the connection is 1.554994E+05N, located at the nodes (x=5, y=0) and (x=5,y=7).
 施加最大允许荷载的情况下:
 连接处最大垂直压力为1.169283E+05N, 位于(x=6, y=0) (x=6,y=7)
 连接处最大水平拉力为1.554994E+05N, 位于(x=5, y=0) (x=5,y=7)
-
+![Image](images/displacement-max-allowed.png)
 
